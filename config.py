@@ -11,7 +11,7 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     FLASKY_MAIL_SUBJECT_PREFIX = '[Elibrary]'
-    FLASKY_MAIL_SENDER = 'Elibrary Administration'
+    FLASKY_MAIL_SENDER = 'Elibrary <some@example.com>'
     FLASKY_ADMIN = os.environ.get('ELIBRARY_ADMIN')
 
     @staticmethod
