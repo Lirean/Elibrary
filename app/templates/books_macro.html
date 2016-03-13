@@ -1,0 +1,10 @@
+{% macro render_all(books, class='books') -%}
+    <div class="{{ class }}">
+        {% for book in books %}
+            <div class="book">
+                <img src = {{book.img_url}}/>
+                <p>{{ book.name|title}} ({{ book.year }})</p>
+            </div>
+        {% endfor %}
+    </div>
+{%- endmacro %}

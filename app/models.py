@@ -57,6 +57,25 @@ class User(UserMixin, db.Model):
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            u = User(email=forgery_py.internet.email_address(),
+                     username=forgery_py.internet.user_name(True),
+                     password=forgery_py.lorem_ipsum.word(),
+                     confirmed=True,
+                     member_since=forgery_py.date.date(True))
+            db.session.add(u)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
@@ -168,20 +187,76 @@ class Book(db.Model):
     description = db.Column(db.String(2048))
     authors = db.relationship('Author', backref='role', lazy='dynamic')
     year_id = db.Column(db.Integer, db.ForeignKey('years.id'))
+    img_url = db.Column(db.String(255))
     authors = db.relationship('Author',
                               secondary=registrations,
                               backref=db.backref('books', lazy='dynamic'),
                               lazy='dynamic')
 
+    @staticmethod
+    def generate_fake(count=500):
+        from random import seed, randint
+        from sqlalchemy.exc import IntegrityError
+        import forgery_py
+
+        seed()
+        author_count = Author.query.count()
+        year_count = Year.query.count()
+        for i in range(count):
+            b = Book()
+            for j in range(randint(1,3)):
+                a = Author.query.offset(randint(0, author_count - 1)).first()
+                b.authors.append(a)
+            b.name = forgery_py.lorem_ipsum.word()
+            b.img_url = 'http://lorempixel.com/250/400/'+'?%s' % i
+            b.description = forgery_py.lorem_ipsum.sentences(randint(2, 10))
+            b.year_id = randint(0, year_count - 1)
+            db.session.add(b)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
 
 class Author(db.Model):
     __tablename__ = 'authors'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
 
+    @staticmethod
+    def generate_fake(count=300):
+        from random import seed
+        from sqlalchemy.exc import IntegrityError
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            a = Author(name = forgery_py.name.full_name())
+            db.session.add(a)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
 
 class Year(db.Model):
     __tablename__ = 'years'
     id = db.Column(db.Integer, primary_key=True)
-    year = db.Column(db.Integer)
+    year = db.Column(db.Integer, unique=True)
     books = db.relationship('Book', backref='year', lazy='dynamic')
+
+    @staticmethod
+    def generate_fake(count=300):
+        from random import seed
+        from sqlalchemy.exc import IntegrityError        
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            y = Year(year = forgery_py.forgery.date.year(past=True))
+            db.session.add(y)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+
+    def __repr__(self):
+        return '%r' % self.year

@@ -1,11 +1,13 @@
 from flask import render_template, abort
 from . import main
-from ..models import User
+from ..models import User, Book
 
 
-@main.route('/')
+@main.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    books = Book.query.all()
+    return render_template('index.html', books=books)
+
 
 @main.route('/user/<username>')
 def user(username):

@@ -1,0 +1,10 @@
+.book {
+	float: left;
+	padding: 10px
+}
+
+.book p{
+	text-align: center;
+	font: 12pt sans-serif;
+	padding-top: 5px
+}
