@@ -4,6 +4,7 @@ from flask.ext.login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from . import db, login_manager
+import flask.ext.whooshalchemy as whooshalchemy
 
 
 class Permission:
@@ -89,7 +90,7 @@ class User(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
-            if self.email == current_app.config['FLASKY_ADMIN']:
+            if self.email == current_app.config['ELIBRARY_ADMIN']:
                 self.role = Role.query.filter_by(permissions=0xff).first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
@@ -192,6 +193,7 @@ book_author_reg = db.Table('book_author_reg',
 
 class Book(db.Model):
     __tablename__ = 'books'
+    __searchable__ = ['name']
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     description = db.Column(db.String(2048))
@@ -227,8 +229,12 @@ class Book(db.Model):
             except IntegrityError:
                 db.session.rollback()
 
+    def __repr__(self):
+        return '%r' % self.name
+
 class Author(db.Model):
     __tablename__ = 'authors'
+    __searchable__ = ['name']
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
 
@@ -246,6 +252,9 @@ class Author(db.Model):
                 db.session.commit()
             except IntegrityError:
                 db.session.rollback()
+
+    def __repr__(self):
+        return '%r' % self.name
 
 class Year(db.Model):
     __tablename__ = 'years'

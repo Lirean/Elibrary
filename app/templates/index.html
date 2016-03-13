@@ -5,7 +5,7 @@
 {% block title %}Elibrary{% endblock %}
 
 {% block page_content %}
-
+{{ wtf.quick_form(form) }}
 {{ books_ren.render_all(books) }}
 <div class="pagination">
     {{ pagination_ren.pagination_widget(pagination, '.index') }}

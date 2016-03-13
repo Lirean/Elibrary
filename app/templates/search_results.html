@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% import 'macroses/_books.html' as books_ren %}
+
+{% block content %}
+	<div class="page-header">
+    	<h1>Search results for "{{ query }}":</h1>
+	</div>
+  {{ books_ren.render_all(results) }}
+{% endblock %}
