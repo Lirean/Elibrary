@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% import 'macroses/_books.html' as books_ren %}
+
+{% block title %}Elibrary{% endblock %}
+
+{% block page_content %}
+        {% for book in books %}
+            <div class="book">
+            	<div id="book_img"> 
+                	<img src = {{book.img_url}}/>
+                </div>
+                <div id='book_info'>
+                <ul>
+                	<li><strong>NAME: </strong>{{ book.name|title}}</li>
+               		<li><strong>YEAR: </strong>{{ book.year}}</li>
+               		<li><strong>AUTHOR: </strong>
+               			{% for author in book.authors %}
+               			{{author.name}}, 
+               			{% endfor %}
+               		.</li>
+                	<li><strong>DESCRIPTION: </strong>{{ book.description}}</li>
+ 
+                </ul>
+                </div>
+        {% endfor %}
+{% endblock %}

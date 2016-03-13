@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% import 'books_macro.html' as ren %}
+{% import 'macroses/_books.html' as books_ren %}
+{% import 'macroses/_pagination.html' as pagination_ren %}
 
 {% block title %}Elibrary{% endblock %}
 
@@ -7,5 +8,8 @@
 <div class="page-header">
     <h1>Initial complete</h1>
 </div>
-{{ ren.render_all(books) }}
+{{ books_ren.render_all(books) }}
+<div class="pagination">
+    {{ pagination_ren.pagination_widget(pagination, '.index') }}
+</div>
 {% endblock %}

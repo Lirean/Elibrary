@@ -4,7 +4,31 @@
 }
 
 .book p{
+	width: 100%;
 	text-align: center;
 	font: 12pt sans-serif;
 	padding-top: 5px
+}
+
+.books {
+	width: 100%;
+	float: left;
+}
+.pagination {
+	width: 100%;
+	float: left;
+}
+
+#book_img{
+	float:left;
+}
+
+#book_info{
+	float: left;
+	width: 50%
+}
+
+#book_info li{
+	padding: 5px;
+	list-style-type: none;
 }
