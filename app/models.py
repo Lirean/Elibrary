@@ -56,6 +56,7 @@ class User(UserMixin, db.Model):
     confirmed = db.Column(db.Boolean, default=False)
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
@@ -152,3 +153,35 @@ login_manager.anonymous_user = AnonymousUser
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+registrations = db.Table('registrations',
+                         db.Column('book_id', db.Integer, db.ForeignKey('books.id')),
+                         db.Column('author_id', db.Integer, db.ForeignKey('authors.id')),
+                         db.PrimaryKeyConstraint('book_id', 'author_id') )
+
+
+class Book(db.Model):
+    __tablename__ = 'books'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    description = db.Column(db.String(2048))
+    authors = db.relationship('Author', backref='role', lazy='dynamic')
+    year_id = db.Column(db.Integer, db.ForeignKey('years.id'))
+    authors = db.relationship('Author',
+                              secondary=registrations,
+                              backref=db.backref('books', lazy='dynamic'),
+                              lazy='dynamic')
+
+
+class Author(db.Model):
+    __tablename__ = 'authors'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+
+
+class Year(db.Model):
+    __tablename__ = 'years'
+    id = db.Column(db.Integer, primary_key=True)
+    year = db.Column(db.Integer)
+    books = db.relationship('Book', backref='year', lazy='dynamic')
