@@ -5,9 +5,7 @@
 {% block title %}Elibrary{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h1>Initial complete</h1>
-</div>
+
 {{ books_ren.render_all(books) }}
 <div class="pagination">
     {{ pagination_ren.pagination_widget(pagination, '.index') }}

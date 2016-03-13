@@ -46,6 +46,12 @@ class Role(db.Model):
         return '<Role %r>' % self.name
 
 
+user_book_reg = db.Table('user_book_reg',
+                         db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                         db.Column('book_id', db.Integer, db.ForeignKey('books.id')),
+                         db.PrimaryKeyConstraint('user_id', 'book_id') )
+
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -56,6 +62,10 @@ class User(UserMixin, db.Model):
     confirmed = db.Column(db.Boolean, default=False)
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+    books = db.relationship('Book',
+                              secondary=user_book_reg,
+                              backref=db.backref('users', lazy='dynamic'),
+                              lazy='dynamic')
 
     @staticmethod
     def generate_fake(count=100):
@@ -174,7 +184,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-registrations = db.Table('registrations',
+book_author_reg = db.Table('book_author_reg',
                          db.Column('book_id', db.Integer, db.ForeignKey('books.id')),
                          db.Column('author_id', db.Integer, db.ForeignKey('authors.id')),
                          db.PrimaryKeyConstraint('book_id', 'author_id') )
@@ -189,7 +199,7 @@ class Book(db.Model):
     year_id = db.Column(db.Integer, db.ForeignKey('years.id'))
     img_url = db.Column(db.String(255))
     authors = db.relationship('Author',
-                              secondary=registrations,
+                              secondary=book_author_reg,
                               backref=db.backref('books', lazy='dynamic'),
                               lazy='dynamic')
 

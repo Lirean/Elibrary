@@ -8,11 +8,12 @@ class Config:
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'vb2109@gmail.com'
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or '741963789123q'
     FLASKY_MAIL_SUBJECT_PREFIX = '[Elibrary]'
     FLASKY_MAIL_SENDER = 'Elibrary <some@example.com>'
     FLASKY_ADMIN = os.environ.get('ELIBRARY_ADMIN')
+    FLASKY_BOOKS_PER_PAGE = 20
 
     @staticmethod
     def init_app(app):

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 {% import 'macroses/_books.html' as books_ren %}
 
 {% block title %}Elibrary{% endblock %}
@@ -17,9 +18,15 @@
                			{% for author in book.authors %}
                			{{author.name}}, 
                			{% endfor %}
-               		.</li>
+               		</li>
                 	<li><strong>DESCRIPTION: </strong>{{ book.description}}</li>
- 
+                  {% if current_user.is_authenticated %}
+                      {% if book in current_user.books %}
+                      <li>{{ wtf.quick_form(form2) }}</li>
+                      {% else %}
+                      <li>{{ wtf.quick_form(form) }}</li>
+                      {% endif %}
+                  {% endif %}
                 </ul>
                 </div>
         {% endfor %}
