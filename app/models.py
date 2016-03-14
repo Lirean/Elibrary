@@ -197,7 +197,6 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     description = db.Column(db.String(2048))
-    authors = db.relationship('Author', backref='role', lazy='dynamic')
     year_id = db.Column(db.Integer, db.ForeignKey('years.id'))
     img_url = db.Column(db.String(255))
     authors = db.relationship('Author',
