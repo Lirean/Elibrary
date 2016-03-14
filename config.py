@@ -3,16 +3,16 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'temporarySecretKey'
+    SECRET_KEY = 'temporarySecretKey'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_USERNAME = 'testelivrary@gmail.com'
+    MAIL_PASSWORD = 'test1111'
     ELIBRARY_MAIL_SUBJECT_PREFIX = '[Elibrary]'
     ELIBRARY_MAIL_SENDER = 'Elibrary <some@example.com>'
-    ELIBRARY_ADMIN = os.environ.get('ELIBRARY_ADMIN')
+    ELIBRARY_ADMIN = 'testelivrary@gmail.com'
     ELIBRARY_BOOKS_PER_PAGE = 20
     MAX_SEARCH_RESULTS = 50
 
