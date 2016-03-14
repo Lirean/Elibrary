@@ -28,5 +28,18 @@ def test():
     unittest.TextTestRunner(verbosity=2).run(tests)
 
 
+@manager.command
+def deploy():
+    """Run deployment tasks."""
+    from flask.ext.migrate import upgrade
+    from app.models import Role, User, Year, Book, Author
+
+    upgrade()
+    Role.insert_roles()
+    User.generate_fake()
+    Year.generate_fake()
+    Author.generate_fake()
+
+
 if __name__ == '__main__':
     manager.run()

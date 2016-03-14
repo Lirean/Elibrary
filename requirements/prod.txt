@@ -11,12 +11,17 @@ Flask-Script==0.6.6
 Flask-SQLAlchemy==1.0
 Flask-WhooshAlchemy==0.56
 Flask-WTF==0.9.4
+foreman==0.9.7
 ForgeryPy==0.1
+futures==3.0.5
+gunicorn==18.0
 itsdangerous==0.23
 Jinja2==2.7.1
 Mako==0.9.1
 MarkupSafe==0.18
 python-editor==0.5
+requests==2.9.1
+requests-futures==0.9.7
 SQLAlchemy==0.9.9
 visitor==0.1.2
 Werkzeug==0.10.4
