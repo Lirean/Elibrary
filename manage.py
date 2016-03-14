@@ -41,12 +41,15 @@ def deploy():
     """Run deployment tasks."""
     from flask.ext.migrate import upgrade
     from app.models import Role, User, Year, Book, Author
+    from app import db
 
-    upgrade()
+    db.drop_all()
+    db.create_all()
     Role.insert_roles()
     User.generate_fake()
     Year.generate_fake()
     Author.generate_fake()
+    Book.generate_fake()
 
 
 if __name__ == '__main__':
