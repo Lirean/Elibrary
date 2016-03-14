@@ -29,6 +29,14 @@ def test():
 
 
 @manager.command
+def profile(length=25, profile_dir=None):
+    """Start the application under the code profiler."""
+    from werkzeug.contrib.profiler import ProfilerMiddleware
+    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[length],
+                                      profile_dir=profile_dir)
+    app.run()
+
+@manager.command
 def deploy():
     """Run deployment tasks."""
     from flask.ext.migrate import upgrade
